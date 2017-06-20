@@ -1,23 +1,38 @@
-import { h } from 'preact';
+import { h, Component } from 'preact';
 import User from './User';
 
-const users = [
-    {
-        image: 'https://www.google.co.uk/images/branding/googlelogo/2x/googlelogo_color_120x44dp.png',
-        name: 'google 1'
-    },
-    {
-        image: 'https://www.google.co.uk/images/branding/googlelogo/2x/googlelogo_color_120x44dp.png',
-        name: 'google 2'
-    }
-]
+export class App extends Component {
+    constructor(props){
+        super(props);
 
-export function App () {
-    return (
-        <div class="app">
-            {users.map(user => <User {...user} key={user.name} />)}
-        </div>
-    );
+        this.state = {
+            user: null,
+            loading: true
+        }
+    }
+    componentDidMount() {
+        fetch(this.props.config.urls.user)
+            .then(resp => resp.json())
+            .then(user => {
+                this.setState({
+                    user,
+                    loading: false
+                })
+            })
+            .catch(err => console.error(err))
+    }
+
+    render() {
+        return (
+            <div class="app">
+                {this.state.loading
+                    ? <p>..loading</p>
+                    : <User image={this.state.user.avatar_url}
+                            name={this.state.user.name} />
+                 } 
+            </div>
+        );
+    }
 }
 
 export default App;
