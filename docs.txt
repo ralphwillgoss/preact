@@ -1,0 +1,2 @@
+yarn add --dev webpack-dev-server babel-core babel-loader babel-preset-env babel-plugin-transform-react-jsx --ignore-engines
+yarn add preact --ignore-engines
